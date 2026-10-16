@@ -75,3 +75,24 @@ core/
 ```
 
 The project uses a local SQLite database at `core/db.sqlite3`. The current Django settings are intended for local development; configure a production secret key, allowed hosts, database, and security settings before deploying.
+
+
+
+flowchart TD
+    A([Start]) --> B[Open CommonRoom]
+    B --> C{Logged in?}
+    C -- No --> D[Register or Login]
+    D --> E{Credentials valid?}
+    E -- No --> D
+    E -- Yes --> F[View Available Rooms]
+    C -- Yes --> F
+    F --> G{Choose an action}
+    G --> H[Create a Room]
+    G --> I[Join an Existing Room]
+    H --> J[Open Room Chat]
+    I --> J
+    J --> K[Read and Send Messages]
+    K --> L{Continue chatting?}
+    L -- Yes --> K
+    L -- No --> M[Leave Room]
+    M --> F
