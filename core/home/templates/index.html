@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f6f0">
+    <title>People | Commonroom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #202c27;
+            --muted: #7b8780;
+            --line: #e4e9e1;
+            --paper: #ffffff;
+            --canvas: #f4f6f0;
+            --forest: #184b3d;
+            --lime: #d4f078;
+            --coral: #e77d61;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+        }
+
+        button, input { font: inherit; }
+
+        .app-shell { min-height: 100vh; }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 2;
+            display: flex;
+            width: 224px;
+            flex-direction: column;
+            padding: 28px 18px 20px;
+            background: var(--forest);
+            color: #fff;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin: 0 10px 46px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 30px;
+            height: 30px;
+            place-items: center;
+            border-radius: 9px;
+            background: var(--lime);
+            color: var(--forest);
+            font-size: 17px;
+        }
+
+        .nav-label {
+            margin: 0 11px 12px;
+            color: #a6c0b3;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 42px;
+            padding: 0 12px;
+            border-radius: 7px;
+            color: #d7e4dc;
+            text-decoration: none;
+        }
+
+        .nav-link.current {
+            background: #2b604f;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .nav-icon { width: 18px; text-align: center; font-size: 16px; }
+
+        .workspace {
+            margin-left: 224px;
+            padding: 0 46px 52px;
+        }
+
+        .topbar {
+            display: flex;
+            height: 72px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .crumb { color: var(--ink); font-weight: 600; }
+
+        .user-chip { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 600; }
+
+        .user-avatar {
+            display: grid;
+            width: 32px;
+            height: 32px;
+            place-items: center;
+            border-radius: 50%;
+            background: #f3c2a7;
+            color: #603d30;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        main { max-width: 1180px; margin: 0 auto; }
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 37px 0 25px;
+        }
+
+        .eyebrow { margin: 0 0 7px; color: var(--muted); font-size: 12px; }
+
+        h1 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 0;
+            line-height: 1.15;
+        }
+
+        .subtitle { margin: 8px 0 0; color: var(--muted); }
+
+        .invite-button {
+            display: inline-flex;
+            min-height: 42px;
+            align-items: center;
+            gap: 9px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--forest);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .invite-button span { color: var(--lime); font-size: 18px; }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-bottom: 28px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+        }
+
+        .metric { min-height: 94px; padding: 17px 22px; }
+        .metric + .metric { border-left: 1px solid var(--line); }
+        .metric-label { color: var(--muted); font-size: 12px; }
+        .metric-value { margin-top: 7px; font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 800; }
+        .metric-value small { margin-left: 7px; color: #73847a; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; }
+        .metric-dot { display: inline-block; width: 7px; height: 7px; margin: 0 5px 2px 0; border-radius: 50%; background: #63a878; }
+
+        .directory-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 14px;
+        }
+
+        .directory-title { margin: 0; font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 800; }
+        .directory-count { margin-left: 8px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; }
+
+        .controls { display: flex; align-items: center; gap: 10px; }
+
+        .search-wrap { position: relative; }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            color: var(--muted);
+            font-size: 15px;
+            transform: translateY(-50%);
+        }
+
+        .search-input {
+            width: 245px;
+            height: 38px;
+            padding: 0 12px 0 36px;
+            border: 1px solid #dfe5dc;
+            border-radius: 6px;
+            outline: none;
+            background: white;
+            color: var(--ink);
+        }
+
+        .search-input:focus { border-color: var(--forest); box-shadow: 0 0 0 3px #184b3d18; }
+
+        .filter-button {
+            height: 38px;
+            padding: 0 13px;
+            border: 1px solid #dfe5dc;
+            border-radius: 6px;
+            background: white;
+            color: var(--ink);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .filter-button[aria-pressed="true"] { border-color: var(--forest); background: #e8f0e9; color: var(--forest); }
+
+        .table-frame { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: white; }
+        .table-scroll { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        thead { background: #f8faf6; }
+        th { height: 42px; padding: 0 20px; color: #78847c; font-size: 10px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; white-space: nowrap; }
+        td { height: 66px; padding: 8px 20px; border-top: 1px solid #edf0eb; color: #4d5a52; white-space: nowrap; }
+        tbody tr { transition: background 140ms ease; }
+        tbody tr:hover { background: #fafcf8; }
+        .person-cell { display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 700; }
+
+        .person-avatar {
+            display: grid;
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            place-items: center;
+            border-radius: 50%;
+            background: #dce9d1;
+            color: #315a3c;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        tbody tr:nth-child(4n + 2) .person-avatar { background: #f7dfc5; color: #815534; }
+        tbody tr:nth-child(4n + 3) .person-avatar { background: #d8e6ee; color: #345970; }
+        tbody tr:nth-child(4n) .person-avatar { background: #f3dcd5; color: #875140; }
+        .person-email { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; }
+        .team-tag { display: inline-block; padding: 5px 9px; border-radius: 4px; background: #f1f4ef; color: #59665d; font-size: 11px; }
+        .status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+        .status::before { width: 7px; height: 7px; border-radius: 50%; background: #62a675; content: ''; }
+        .status.away::before { background: var(--coral); }
+        .status.inactive::before { background: var(--coral); }
+        .status.invited::before { background: #d6a644; }
+        .invite-button { text-decoration: none; }
+        .invite-notice { margin-bottom: 18px; padding: 12px 15px; border: 1px solid #c9dec9; border-radius: 6px; background: #edf6eb; color: #315a3c; }
+        .empty-state { display: none; padding: 42px 20px; color: var(--muted); text-align: center; }
+        .produce-section { margin-top: 34px; }
+        .produce-heading { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+        .produce-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        .produce-item { display: flex; min-height: 76px; align-items: center; gap: 13px; padding: 15px 18px; border: 1px solid var(--line); border-radius: 7px; background: white; }
+        .produce-swatch { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; background: #71a879; }
+        .produce-swatch.orange { background: #e9934f; }
+        .produce-swatch.dark-green { background: #426d4c; }
+        .car-mark { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border-radius: 50%; background: #e8f0e9; color: var(--forest); font-size: 12px; font-weight: 800; }
+        .produce-name { color: var(--ink); font-weight: 700; }
+        .produce-detail { margin-top: 4px; color: var(--muted); font-size: 11px; }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 72px; align-items: center; padding: 22px 10px; }
+            .brand { margin: 0 0 42px; }
+            .brand-name, .nav-label, .nav-text { display: none; }
+            .nav-link { width: 46px; justify-content: center; padding: 0; }
+            .workspace { margin-left: 72px; padding-right: 26px; padding-left: 26px; }
+        }
+
+        @media (max-width: 650px) {
+            .workspace { padding: 0 16px 34px; }
+            .topbar { height: 60px; }
+            .page-heading { align-items: flex-start; padding: 27px 0 20px; }
+            h1 { font-size: 26px; }
+            .subtitle { max-width: 240px; line-height: 1.5; }
+            .invite-button { min-height: 38px; padding: 0 11px; font-size: 12px; }
+            .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .metric { min-height: 82px; padding: 14px; }
+            .metric:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+            .metric:nth-child(4) { border-top: 1px solid var(--line); }
+            .metric-value { font-size: 21px; }
+            .directory-head { align-items: flex-start; flex-direction: column; }
+            .controls { width: 100%; }
+            .search-wrap { flex: 1; }
+            .search-input { width: 100%; }
+            .filter-button { padding: 0 10px; }
+            th, td { padding-right: 14px; padding-left: 14px; }
+            th:first-child, td:first-child { position: sticky; left: 0; background: white; }
+            thead th:first-child { background: #f8faf6; }
+            .produce-list { grid-template-columns: 1fr; gap: 8px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Main navigation">
+            <div class="brand"><span class="brand-mark">c</span><span class="brand-name">commonroom</span></div>
+            <p class="nav-label">Workspace</p>
+            <a class="nav-link" href="{% url 'overview' %}"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-text">Overview</span></a>
+            <a class="nav-link current" href="{% url 'home' %}" aria-current="page"><span class="nav-icon" aria-hidden="true">◉</span><span class="nav-text">People</span></a>
+            <a class="nav-link" href="#vegetables"><span class="nav-icon" aria-hidden="true">❋</span><span class="nav-text">Vegetables</span></a>
+            <a class="nav-link" href="#cars"><span class="nav-icon" aria-hidden="true">C</span><span class="nav-text">Cars</span></a>
+            <a class="nav-link" href="{% url 'about' %}"><span class="nav-icon" aria-hidden="true">i</span><span class="nav-text">About</span></a>
+            <a class="nav-link" href="{% url 'contact' %}"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-text">Contact</span></a>
+        </aside>
+
+        <div class="workspace">
+            <header class="topbar">
+                <div>Workspace <span aria-hidden="true">/</span> <span class="crumb">People</span></div>
+                <div class="user-chip"><span class="user-avatar">{{ request.user.username|slice:":1"|upper }}</span><span>{{ request.user.username }}</span></div>
+            </header>
+
+            <main id="people">
+                <section class="page-heading" aria-labelledby="page-title">
+                    <div>
+                        <p class="eyebrow">Your workspace</p>
+                        <h1 id="page-title">People</h1>
+                        <p class="subtitle">Get to know the people making things happen.</p>
+                    </div>
+                    <a class="invite-button" href="{% url 'invite' %}"><span aria-hidden="true">+</span> Invite people</a>
+                </section>
+
+                {% if invite_success %}<div class="invite-notice" role="status">{{ invite_success }}</div>{% endif %}
+
+                <section class="metrics" aria-label="People overview">
+                    <div class="metric"><div class="metric-label">Total people</div><div class="metric-value">{{ people_count }}<small>in workspace</small></div></div>
+                    <div class="metric"><div class="metric-label">Active now</div><div class="metric-value"><span class="metric-dot"></span>{{ active_count }}<small>people</small></div></div>
+                    <div class="metric"><div class="metric-label">Teams</div><div class="metric-value">{{ team_count }}<small>groups</small></div></div>
+                    <div class="metric"><div class="metric-label">Away / inactive</div><div class="metric-value">{{ away_count }}<small>people</small></div></div>
+                </section>
+
+                <section aria-labelledby="directory-title">
+                    <div class="directory-head">
+                        <h2 class="directory-title" id="directory-title">All people<span class="directory-count" id="visible-count">{{ people_count }} people</span></h2>
+                        <div class="controls">
+                            <label class="search-wrap">
+                                <span class="search-icon" aria-hidden="true">⌕</span>
+                                <input class="search-input" id="people-search" type="search" placeholder="Search people..." aria-label="Search people">
+                            </label>
+                            <button class="filter-button" type="button" data-filter="all" aria-pressed="true">Everyone</button>
+                            <button class="filter-button" type="button" data-filter="Active" aria-pressed="false">Active</button>
+                        </div>
+                    </div>
+
+                    <div class="table-frame">
+                        <div class="table-scroll">
+                            <table>
+                                <thead><tr><th scope="col">Name</th><th scope="col">Account</th><th scope="col">Role</th><th scope="col">Team</th><th scope="col">Age</th><th scope="col">Status</th><th scope="col">Actions</th></tr></thead>
+                                <tbody id="people-list">
+                                    {% for person in people %}
+                                    <tr data-status="{{ person.status }}">
+                                        <td><div class="person-cell"><span class="person-avatar" aria-hidden="true">{{ person.name|slice:":1" }}</span><span>{{ person.name }}<span class="person-email">{{ person.email }}</span></span></div></td>
+                                        <td>{{ person.account_type }}</td>
+                                        <td>{{ person.role }}</td>
+                                        <td><span class="team-tag">{{ person.team }}</span></td>
+                                        <td>{{ person.age }}</td>
+                                        <td><span class="status{% if person.status == 'Away' or person.status == 'Inactive' %} inactive{% elif person.status == 'Invited' %} invited{% endif %}">{{ person.status }}</span></td>
+                                        <td>
+                                            {% if person.is_self %}
+                                            <form class="inline-form" method="post" action="{% url 'toggle_member_status' %}">
+                                                {% csrf_token %}
+                                                <button class="small-button" type="submit">Make {% if person.status == 'Active' %}inactive{% else %}active{% endif %}</button>
+                                            </form>
+                                            {% elif person.invite_id %}
+                                            <form class="inline-form" method="post" action="{% url 'delete_invite' person.invite_id %}">
+                                                {% csrf_token %}
+                                                <button class="small-button danger-button" type="submit">Delete</button>
+                                            </form>
+                                            {% else %}&mdash;{% endif %}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr><td colspan="7">No people to show.</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="empty-state" id="empty-state">No people match your search.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="produce-section" id="vegetables" aria-labelledby="vegetables-title">
+                    <div class="produce-heading">
+                        <h2 class="directory-title" id="vegetables-title">Vegetables<span class="directory-count">{{ vegetables|length }} in catalog</span></h2>
+                    </div>
+                    <div class="produce-list">
+                        {% for vegetable in vegetables %}
+                        <article class="produce-item">
+                            <span class="produce-swatch{% if vegetable.color == 'Orange' %} orange{% elif vegetable.color == 'Dark Green' %} dark-green{% endif %}" aria-hidden="true"></span>
+                            <div>
+                                <div class="produce-name">{{ vegetable.name }}</div>
+                                <div class="produce-detail">{{ vegetable.type }} vegetable · {{ vegetable.color }}</div>
+                            </div>
+                        </article>
+                        {% empty %}
+                        <p class="subtitle">No vegetables to show.</p>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section class="produce-section" id="cars" aria-labelledby="cars-title">
+                    <div class="produce-heading">
+                        <h2 class="directory-title" id="cars-title">Cars<span class="directory-count">{{ cars|length }} in catalog</span></h2>
+                    </div>
+                    <form class="form-panel" method="post" action="{% url 'add_car' %}">
+                        {% csrf_token %}
+                        <div class="form-field">
+                            <label for="{{ car_form.car_name.id_for_label }}">Add a car</label>
+                            {{ car_form.car_name }}
+                            {% for error in car_form.car_name.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                        <button class="primary-button" type="submit">Add car</button>
+                    </form>
+                    <div class="produce-list">
+                        {% for car in cars %}
+                        <article class="produce-item">
+                            <span class="car-mark" aria-hidden="true">C</span>
+                            <div>
+                                <div class="produce-name">{{ car.car_name }}</div>
+                                <div class="produce-detail">Status: <span class="car-status{% if car.is_active %} active{% else %} inactive{% endif %}">{% if car.is_active %}Active{% else %}Inactive{% endif %}</span></div>
+                            </div>
+                            {% if car.owner_id == request.user.id %}
+                            <form class="inline-form" method="post" action="{% url 'toggle_car' car.pk %}">
+                                {% csrf_token %}
+                                <button class="small-button" type="submit">Make {% if car.is_active %}inactive{% else %}active{% endif %}</button>
+                            </form>
+                            {% else %}
+                            <span class="produce-detail">Shared</span>
+                            {% endif %}
+                        </article>
+                        {% empty %}
+                        <p class="subtitle">No cars to show.</p>
+                        {% endfor %}
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+        const searchInput = document.getElementById('people-search');
+        const peopleRows = [...document.querySelectorAll('#people-list tr[data-status]')];
+        const filterButtons = [...document.querySelectorAll('[data-filter]')];
+        const visibleCount = document.getElementById('visible-count');
+        const emptyState = document.getElementById('empty-state');
+        let statusFilter = 'all';
+
+        function updatePeople() {
+            const query = searchInput.value.trim().toLowerCase();
+            let count = 0;
+            peopleRows.forEach((row) => {
+                const matchesQuery = row.textContent.toLowerCase().includes(query);
+                const matchesStatus = statusFilter === 'all' || row.dataset.status === statusFilter;
+                const isVisible = matchesQuery && matchesStatus;
+                row.hidden = !isVisible;
+                if (isVisible) count += 1;
+            });
+            visibleCount.textContent = `${count} ${count === 1 ? 'person' : 'people'}`;
+            emptyState.style.display = count === 0 ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', updatePeople);
+        filterButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                statusFilter = button.dataset.filter;
+                filterButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+                updatePeople();
+            });
+        });
+    </script>
+</body>
+</html>

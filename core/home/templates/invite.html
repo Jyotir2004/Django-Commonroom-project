@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Invite people{% endblock %}
+
+{% block content %}
+<section aria-labelledby="page-title">
+    <p class="eyebrow">People</p>
+    <h1 id="page-title">Invite someone</h1>
+    <p class="lead">Add a teammate to the directory as a pending invite. Email delivery is not configured.</p>
+
+    <form class="form-panel" method="post" action="{% url 'invite' %}">
+        {% csrf_token %}
+        {% if errors %}
+        <div class="form-error" role="alert">
+            {% for error in errors %}<div>{{ error }}</div>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="form-field">
+            <label for="invite-name">Name</label>
+            <input id="invite-name" name="name" type="text" maxlength="100" autocomplete="name" value="{{ form_data.name|default:'' }}" required>
+        </div>
+        <div class="form-field">
+            <label for="invite-email">Email address</label>
+            <input id="invite-email" name="email" type="email" maxlength="254" autocomplete="email" value="{{ form_data.email|default:'' }}" required>
+        </div>
+        <div class="form-field">
+            <label for="invite-role">Role</label>
+            <input id="invite-role" name="role" type="text" maxlength="100" value="{{ form_data.role|default:'' }}" placeholder="Team member">
+        </div>
+        <div class="form-field">
+            <label for="invite-team">Team</label>
+            <input id="invite-team" name="team" type="text" maxlength="100" value="{{ form_data.team|default:'' }}" placeholder="Unassigned">
+        </div>
+        <div class="form-actions">
+            <button class="primary-button" type="submit">Add invite</button>
+            <a class="text-link" href="{% url 'home' %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

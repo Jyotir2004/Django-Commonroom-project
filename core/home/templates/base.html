@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f6f0">
+    <title>{% block title %}Commonroom{% endblock %} | Commonroom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #202c27;
+            --muted: #738078;
+            --line: #e3e9e1;
+            --paper: #fff;
+            --canvas: #f4f6f0;
+            --forest: #184b3d;
+            --lime: #d4f078;
+            --coral: #e77d61;
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--canvas); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+        a { color: inherit; }
+        .site-header { background: var(--forest); color: white; }
+        .header-inner { display: flex; max-width: 1180px; min-height: 70px; align-items: center; justify-content: space-between; gap: 24px; margin: auto; padding: 0 28px; }
+        .brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 10px; color: white; font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 800; text-decoration: none; }
+        .brand-mark { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 8px; background: var(--lime); color: var(--forest); font-size: 17px; }
+        .main-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 5px; }
+        .main-nav a { padding: 9px 11px; border-radius: 5px; color: #d7e4dc; font-size: 12px; font-weight: 600; text-decoration: none; }
+        .main-nav a:hover, .main-nav a:focus-visible { background: #2b604f; color: white; }
+        main { max-width: 1124px; min-height: calc(100vh - 130px); margin: 0 auto; padding: 54px 28px 64px; }
+        .eyebrow { margin: 0 0 8px; color: var(--muted); font-size: 12px; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; letter-spacing: 0; }
+        h1 { margin: 0; font-size: 32px; font-weight: 800; line-height: 1.2; }
+        h2 { margin: 0; font-size: 18px; font-weight: 800; }
+        .lead { max-width: 650px; margin: 12px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+        .page-heading { margin-bottom: 28px; }
+        .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+        .metric { min-height: 105px; padding: 20px 22px; }
+        .metric + .metric { border-left: 1px solid var(--line); }
+        .metric-label { color: var(--muted); font-size: 12px; }
+        .metric-value { margin-top: 9px; font-family: 'Manrope', sans-serif; font-size: 27px; font-weight: 800; }
+        .metric-note { margin-left: 7px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; }
+        .overview-columns { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; margin-top: 38px; }
+        .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+        .text-link { color: var(--forest); font-size: 12px; font-weight: 700; text-decoration: none; }
+        .text-link:hover { text-decoration: underline; }
+        .person-row, .vegetable-row { display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); }
+        .person-name, .vegetable-name { font-weight: 700; }
+        .row-detail { margin-top: 3px; color: var(--muted); font-size: 11px; }
+        .status { display: inline-flex; align-items: center; gap: 7px; color: #516258; font-size: 11px; }
+        .status::before { width: 7px; height: 7px; border-radius: 50%; background: #62a675; content: ''; }
+        .status.away::before { background: var(--coral); }
+        .vegetable-kind { color: var(--muted); font-size: 11px; }
+        .produce-section { margin-top: 34px; }
+        .produce-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+        .produce-item { display: flex; min-height: 76px; align-items: center; gap: 13px; padding: 15px 18px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); }
+        .car-mark { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border-radius: 50%; background: #e8f0e9; color: var(--forest); font-size: 12px; font-weight: 800; }
+        .produce-name { color: var(--ink); font-weight: 700; }
+        .produce-detail { margin-top: 4px; color: var(--muted); font-size: 11px; }
+        .about-copy { max-width: 740px; margin-top: 28px; color: #526057; font-size: 15px; line-height: 1.8; }
+        .about-copy p { margin: 0 0 18px; }
+        .contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 34px; }
+        .contact-item { min-height: 150px; padding: 23px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); }
+        .contact-item h2 { margin-bottom: 10px; font-size: 15px; }
+        .contact-item p { margin: 0 0 13px; color: var(--muted); line-height: 1.6; }
+        .email-link { color: var(--forest); font-weight: 700; text-decoration: none; }
+        .email-link:hover { text-decoration: underline; }
+        .form-panel { max-width: 620px; padding: 24px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+        .form-field { margin-bottom: 18px; }
+        .form-field label { display: block; margin-bottom: 7px; color: var(--ink); font-size: 12px; font-weight: 700; }
+        .form-field input { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dfe5dc; border-radius: 5px; background: white; color: var(--ink); font: inherit; }
+        .form-field input:focus { border-color: var(--forest); outline: 3px solid #184b3d18; }
+        .form-actions { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+        .primary-button { min-height: 42px; padding: 0 16px; border: 0; border-radius: 5px; background: var(--forest); color: white; cursor: pointer; font: inherit; font-weight: 700; }
+        .form-error { margin: 0 0 16px; padding: 12px 14px; border: 1px solid #ecc7bc; border-radius: 5px; background: #fff3ef; color: #803b2a; }
+        .form-field select { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dfe5dc; border-radius: 5px; background: white; color: var(--ink); font: inherit; }
+        .form-field .helptext, .form-field ul { display: block; margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 11px; }
+        .messages { margin: 0 0 18px; padding: 12px 14px; border: 1px solid #c9dec9; border-radius: 5px; background: #edf6eb; color: #315a3c; }
+        .inline-form { display: inline; }
+        .small-button { min-height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--forest); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
+        .danger-button { color: #803b2a; }
+        .car-status { font-weight: 700; }
+        .car-status.active { color: #35764a; }
+        .car-status.inactive { color: #803b2a; }
+        .site-footer { padding: 20px 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; text-align: center; }
+        @media (max-width: 700px) {
+            .header-inner { align-items: flex-start; flex-direction: column; gap: 12px; padding: 17px 18px 13px; }
+            .main-nav { justify-content: flex-start; gap: 0; }
+            .main-nav a { padding: 8px 9px; }
+            main { padding: 36px 18px 46px; }
+            h1 { font-size: 27px; }
+            .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .metric { min-height: 88px; padding: 15px; }
+            .metric:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+            .metric:nth-child(4) { border-top: 1px solid var(--line); }
+            .metric-value { font-size: 23px; }
+            .overview-columns, .contact-grid { grid-template-columns: 1fr; gap: 30px; }
+            .produce-list { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="{% url 'overview' %}"><span class="brand-mark">c</span><span>commonroom</span></a>
+            <nav class="main-nav" aria-label="Main navigation">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'overview' %}">Overview</a>
+                    <a href="{% url 'home' %}">People</a>
+                    <a href="{% url 'home' %}#vegetables">Vegetables</a>
+                    <a href="{% url 'home' %}#cars">Cars</a>
+                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'contact' %}">Contact</a>
+                    <span>{{ user.username }}</span>
+                    <form class="inline-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="small-button" type="submit">Log out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Log in</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main>
+        {% if messages %}
+        <div class="messages" role="status">
+            {% for message in messages %}<div>{{ message }}</div>{% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">Commonroom workspace</footer>
+</body>
+</html>

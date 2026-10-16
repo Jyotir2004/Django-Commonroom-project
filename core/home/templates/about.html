@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section aria-labelledby="page-title">
+    <p class="eyebrow">About Commonroom</p>
+    <h1 id="page-title">A clearer view of your workspace.</h1>
+    <p class="lead">Commonroom brings people, teams, and shared resources together in one place.</p>
+
+    <div class="about-copy">
+        <p>Good work depends on people being able to find one another and understand how they fit together. Commonroom gives your team a simple directory, a workspace overview, and room to keep useful information close at hand.</p>
+        <p>Registered accounts and invitations in the people directory are stored in the database. The vegetable catalog is sample data.</p>
+        <a class="text-link" href="{% url 'overview' %}">Back to workspace overview</a>
+    </div>
+</section>
+{% endblock %}
