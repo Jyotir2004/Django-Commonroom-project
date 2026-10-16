@@ -96,3 +96,23 @@ flowchart TD
     L -- Yes --> K
     L -- No --> M[Leave Room]
     M --> F
+
+
+
+sequenceDiagram
+    actor User
+    participant UI as Chat Page
+    participant D as Django View
+    participant DB as Database
+
+    User->>UI: Type message and submit
+    UI->>D: POST message + room ID
+    D->>D: Check login and room access
+    D->>DB: Save message
+    DB-->>D: Message saved
+    D-->>UI: Redirect or return response
+    UI->>D: Request room messages
+    D->>DB: Fetch messages for room
+    DB-->>D: Return messages
+    D-->>UI: Render chat history
+    UI-->>User: Display message
